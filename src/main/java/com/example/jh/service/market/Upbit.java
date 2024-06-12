@@ -4,6 +4,8 @@ import com.example.jh.model.CoinPriceModel;
 import com.example.jh.service.Market;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.SneakyThrows;
@@ -63,6 +65,7 @@ public class Upbit implements Market {
     CoinPriceModel[] result = new CoinPriceModel[length];
     ObjectMapper objectMapper = new ObjectMapper();
     JsonNode jsonNode = objectMapper.readTree(response);
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
     int index = 0;
     if (jsonNode.isArray()) {
@@ -70,10 +73,12 @@ public class Upbit implements Market {
         JsonNode singleNode = node.get("market");
         if (singleNode != null) {
           result[index] = CoinPriceModel.builder()
+              .date(LocalDateTime.parse(node.get("candle_date_time_kst").asText(),formatter))
               .high(node.get("high_price").asDouble())
               .low(node.get("low_price").asDouble())
               .open(node.get("opening_price").asDouble())
               .close(node.get("trade_price").asDouble())
+              .volume(node.get("candle_acc_trade_volume").asDouble())
               .build();
           index++;
         }
