@@ -18,9 +18,11 @@ import reactor.core.publisher.Mono;
 public class Upbit implements Market {
 
   private final WebClient webClient;
+  private final DateTimeFormatter formatter;
 
   public Upbit() {
     this.webClient = WebClient.create("https://api.upbit.com");
+    this.formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
   }
 
   @SneakyThrows
@@ -65,7 +67,6 @@ public class Upbit implements Market {
     CoinPriceModel[] result = new CoinPriceModel[length];
     ObjectMapper objectMapper = new ObjectMapper();
     JsonNode jsonNode = objectMapper.readTree(response);
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
     int index = 0;
     if (jsonNode.isArray()) {
