@@ -58,7 +58,7 @@ public class CoinController {
       return Arrays.stream(candles).toList();
     }
 
-    CoinPriceModel[] caculatedCandles=indicatorManagerService.caculate(candles,indi);
-    return Arrays.stream(caculatedCandles).toList();
+    indicatorManagerService.caculate(candles, indi);
+    return Arrays.stream(candles).toList();
   }
 }
