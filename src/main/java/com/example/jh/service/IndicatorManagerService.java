@@ -1,6 +1,8 @@
 package com.example.jh.service;
 
 import com.example.jh.model.CoinPriceModel;
+
+import java.util.List;
 import java.util.Map;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Lazy;
@@ -14,6 +16,10 @@ public class IndicatorManagerService {
 
   public IndicatorManagerService(ApplicationContext applicationContext) {
     indicatorMap = applicationContext.getBeansOfType(Indicator.class);
+  }
+
+  public List<String> getIndicatorList(){
+    return indicatorMap.keySet().stream().toList();
   }
 
   public void caculate(CoinPriceModel[] candles, String indicatorQuery) {
